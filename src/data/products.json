@@ -1,0 +1,35 @@
+[
+  {
+    "id": "1",
+    "title": "Guantes de Boxeo",
+    "description": "Guantes profesionales para entrenamiento",
+    "code": "GBX001",
+    "price": 5000,
+    "status": true,
+    "stock": 10,
+    "category": "equipamiento",
+    "thumbnails": []
+  },
+  {
+    "id": "2",
+    "title": "Protector Bucal",
+    "description": "Protector bucal moldeable para boxeo",
+    "code": "PBX001",
+    "price": 800,
+    "status": true,
+    "stock": 25,
+    "category": "proteccion",
+    "thumbnails": []
+  },
+  {
+    "id": "3",
+    "title": "Bolsa de Boxeo",
+    "description": "Bolsa de boxeo de cuero reforzado",
+    "code": "BBX001",
+    "price": 12000,
+    "status": true,
+    "stock": 5,
+    "category": "equipamiento",
+    "thumbnails": []
+  }
+]
