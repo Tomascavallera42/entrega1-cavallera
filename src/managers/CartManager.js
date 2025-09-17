@@ -1,18 +1,18 @@
-import fs from "fs-extra";
+import fs from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 
 const path = "./data/carts.json";
 
 export default class CartManager {
   async getCarts() {
-    return await fs.readJSON(path).catch(() => []);
+    return JSON.parse(await fs.readFile(path, "utf-8").catch(() => "[]"));
   }
 
   async createCart() {
     const carts = await this.getCarts();
     const newCart = { id: uuidv4(), products: [] };
     carts.push(newCart);
-    await fs.writeJSON(path, carts, { spaces: 2 });
+    await fs.writeFile(path, JSON.stringify(carts, null, 2));
     return newCart;
   }
 
@@ -31,7 +31,7 @@ export default class CartManager {
     } else {
       cart.products.push({ product: productId, quantity: 1 });
     }
-    await fs.writeJSON(path, carts, { spaces: 2 });
+    await fs.writeFile(path, JSON.stringify(carts, null, 2));
     return cart;
   }
 }

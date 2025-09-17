@@ -1,11 +1,11 @@
-import fs from "fs-extra";
+import fs from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 
 const path = "./data/products.json";
 
 export default class ProductManager {
   async getProducts() {
-    return await fs.readJSON(path).catch(() => []);
+    return JSON.parse(await fs.readFile(path, "utf-8").catch(() => "[]"));
   }
 
   async getProductById(id) {
@@ -17,7 +17,7 @@ export default class ProductManager {
     const products = await this.getProducts();
     const newProduct = { id: uuidv4(), ...product };
     products.push(newProduct);
-    await fs.writeJSON(path, products, { spaces: 2 });
+    await fs.writeFile(path, JSON.stringify(products, null, 2));
     return newProduct;
   }
 
@@ -26,7 +26,7 @@ export default class ProductManager {
     const index = products.findIndex(p => p.id === id);
     if (index === -1) return null;
     products[index] = { ...products[index], ...updates, id };
-    await fs.writeJSON(path, products, { spaces: 2 });
+    await fs.writeFile(path, JSON.stringify(products, null, 2));
     return products[index];
   }
 
@@ -34,7 +34,7 @@ export default class ProductManager {
     const products = await this.getProducts();
     const updated = products.filter(p => p.id !== id);
     if (updated.length === products.length) return false;
-    await fs.writeJSON(path, updated, { spaces: 2 });
+    await fs.writeFile(path, JSON.stringify(updated, null, 2));
     return true;
   }
 }
