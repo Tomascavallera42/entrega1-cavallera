@@ -5,7 +5,9 @@ const router = Router();
 const productManager = new ProductManager();
 
 router.get("/", async (req, res) => {
-  res.json(await productManager.getProducts());
+  const { limit, page, sort, query } = req.query;
+  const products = await productManager.getProducts({ limit, page, sort, query });
+  res.json(products);
 });
 
 router.get("/:pid", async (req, res) => {

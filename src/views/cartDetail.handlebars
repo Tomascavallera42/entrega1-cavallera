@@ -1,0 +1,69 @@
+<h1>Carrito {{cart._id}}</h1>
+
+{{#if cart.products.length}}
+<table>
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Precio</th>
+      <th>Cantidad</th>
+      <th>Total</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each cart.products}}
+    <tr data-id="{{this.product._id}}">
+      <td>{{this.product.title}}</td>
+      <td>${{this.product.price}}</td>
+      <td>
+        <input type="number" class="quantityInput" value="{{this.quantity}}" min="1">
+      </td>
+      <td>${{multiply this.product.price this.quantity}}</td>
+      <td>
+        <button class="updateBtn">Actualizar</button>
+        <button class="deleteBtn">Eliminar</button>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+<button id="clearCartBtn">Vaciar carrito</button>
+{{else}}
+<p>El carrito está vacío</p>
+{{/if}}
+
+<script>
+  const cartId = "{{cart._id}}";
+  
+  document.querySelectorAll(".updateBtn").forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+      const row = e.target.closest("tr");
+      const pid = row.dataset.id;
+      const quantity = row.querySelector(".quantityInput").value;
+      await fetch(`/api/carts/${cartId}/products/${pid}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity: Number(quantity) })
+      });
+      alert("Cantidad actualizada");
+      location.reload();
+    });
+  });
+
+  document.querySelectorAll(".deleteBtn").forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+      const row = e.target.closest("tr");
+      const pid = row.dataset.id;
+      await fetch(`/api/carts/${cartId}/products/${pid}`, { method: "DELETE" });
+      alert("Producto eliminado");
+      location.reload();
+    });
+  });
+
+  document.getElementById("clearCartBtn")?.addEventListener("click", async () => {
+    await fetch(`/api/carts/${cartId}`, { method: "DELETE" });
+    alert("Carrito vaciado");
+    location.reload();
+  });
+</script>

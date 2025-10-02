@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
 
-const path = "./data/products.json";
+const path = "./src/data/products.json";
 
 export default class ProductManager {
   async getProducts() {
